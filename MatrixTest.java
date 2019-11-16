@@ -4,8 +4,10 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class MatrixTest{
-    Matrix aTest =  new Matrix(3,3);
+    public static void main(String[] args) {
+	Matrix aTest =  new Matrix(3,3);
     }
+}
 
 class Matrix{
     private int dimN;
@@ -18,7 +20,17 @@ class Matrix{
 	matrix = RandomMatrix();
     }
 
-    
+    public int[][] getMatrix() {
+	return this.matrix;
+    }
+
+    public void setMatrix(int[][] mat) {
+	this.matrix = mat;
+    }
+
+    public void setMatrix(int i, int j, int val) {
+	this.matrix[i][j] = val;
+    }
     
     public int[][] RandomMatrix() {
 	int[][] matrix = new int[dimN][dimP];
@@ -43,10 +55,13 @@ class Vector {
 	vector = RandomVector();
     }
 
-    public int[] Vector() {
+    public int[] RandomVector() {
+	int[] vector = new int[dimN];
+	Random rand = new Random();
 	for(int i=0; i<=dimN;i++)
 	    {
 		vector[i] = rand.nextInt(20);
 	    }
+	return vector;
     }
 }
