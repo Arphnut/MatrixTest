@@ -35,9 +35,9 @@ class Matrix{
 	return this.matrix;
     }
 
-    // public int getMatrix(int i, int j) {
-    // 	return this.matrix[i][j];
-    // }
+    public int getMatrix(int i, int j) {
+    	return this.matrix[i][j];
+    }
     
     public void setMatrix(int[][] mat) {
 	this.matrix = mat;
@@ -89,62 +89,27 @@ class Matrix{
     }
 
     public Vector vectorMultiplication(Vector vect) {
-	int[] vectRes = new int[this.dimN];
+	int[][] vectRes = new int[this.dimN][1];
 	for(int i = 0; i < this.dimN; i++)
 	    {
 		int sum = 0;
 		for(int j = 0; j < this.dimP; j++)
 		    {
-			sum += this.matrix[i][j] * vect.getVector(j);
+			sum += this.matrix[i][j] * vect.getMatrix(j,0);
 		    }
-		vectRes[i] = sum;
+		vectRes[i][0] = sum;
 	    }
 	Vector vectorRes = new Vector(this.dimN, vectRes);
 	return vectorRes;
     }
 }
 
-class Vector {
-    private int dimN;
-    private int vector[];
-
+class Vector extends Matrix {
     public Vector(int n) {
-	dimN = n;
-	vector = RandomVector();
+	super(n, 1);
     }
 
-    public Vector(int n, int[] vect) {
-	dimN = n;
-	vector = vect;
-    }
-
-    public int[] getVector() {
-	return this.vector;
-    }
-
-    public int getVector(int i) {
-	return this.vector[i];
-    }
-
-
-    public int[] RandomVector() {
-	int[] vector = new int[dimN];
-	Random rand = new Random();
-	for(int i = 0; i < dimN; i++)
-	    {
-		vector[i] = rand.nextInt(20);
-	    }
-	return vector;
-    }
-
-    public String toString() {
-	String vectorString = "[";
-	for(int i = 0; i < this.dimN; i++)
-	    {
-		vectorString += this.vector[i] + ", ";
-	    }
-	vectorString = vectorString.substring(0, vectorString.length()-2);
-	vectorString += " ]";
-	return vectorString;
+    public Vector(int n, int[][] vect) {
+	super(n, 1, vect);
     }
 }
