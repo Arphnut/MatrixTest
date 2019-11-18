@@ -5,12 +5,19 @@ import java.util.Random;
 
 public class MatrixTest{
     public static void main(String[] args) {
-	Matrix aTest =  new Matrix(3,4);
-	Matrix bTest = new Matrix(4, 3);
+	Matrix aTest =  new Matrix(3, 4);
+	Matrix bTest = new Matrix(3, 3);
 	Vector vTest = new Vector(4);
 	System.out.println(aTest.transpose());
-	System.out.println(aTest.vectorMultiplication(vTest));
 	System.out.println(aTest.matrixMultiplication(bTest));
+    }
+}
+
+class DimensionException extends Exception {
+    public DimensionException() {
+	System.out.println("Exception in thread\n"
+			   + "The last dimension of the first matrix should "
+			   + "equal the first dimension from the second matrix.\n");
     }
 }
 
@@ -75,6 +82,13 @@ class Matrix{
 	return matrix;
     }
 
+    public void testDimension(Matrix mat)
+	throws DimensionException
+    {
+	if (!(this.dimP == mat.dimN))
+	    throw new DimensionException();
+    }
+
     public Matrix transpose() {
 	int[][] trans = new int[this.dimP][this.dimN];
 	for(int i = 0; i < dimN; i++)
@@ -88,22 +102,13 @@ class Matrix{
 	return transMatrix;
     }
 
-    public Vector vectorMultiplication(Vector vect) {
-	int[][] vectRes = new int[this.dimN][1];
-	for(int i = 0; i < this.dimN; i++)
-	    {
-		int sum = 0;
-		for(int j = 0; j < this.dimP; j++)
-		    {
-			sum += this.matrix[i][j] * vect.getMatrix(j,0);
-		    }
-		vectRes[i][0] = sum;
-	    }
-	Vector vectorRes = new Vector(this.dimN, vectRes);
-	return vectorRes;
-    }
-
     public Matrix matrixMultiplication(Matrix mat) {
+	try {
+	    this.testDimension(mat);
+	}
+	catch (DimensionException ex) {
+	    return null;
+	}
 	int[][] matRes = new int[this.dimN][mat.dimP];
 	for(int i=0; i < this.dimN; i++)
 	    {
