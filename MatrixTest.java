@@ -6,11 +6,11 @@ import java.util.Random;
 public class MatrixTest{
     public static void main(String[] args) {
 	Matrix aTest =  new Matrix(3,4);
-	System.out.println(aTest);
+	Matrix bTest = new Matrix(4, 3);
 	Vector vTest = new Vector(4);
-	System.out.println(vTest);
 	System.out.println(aTest.transpose());
 	System.out.println(aTest.vectorMultiplication(vTest));
+	System.out.println(aTest.matrixMultiplication(bTest));
     }
 }
 
@@ -101,6 +101,24 @@ class Matrix{
 	    }
 	Vector vectorRes = new Vector(this.dimN, vectRes);
 	return vectorRes;
+    }
+
+    public Matrix matrixMultiplication(Matrix mat) {
+	int[][] matRes = new int[this.dimN][mat.dimP];
+	for(int i=0; i < this.dimN; i++)
+	    {
+		for(int j=0; j < mat.dimP;  j++)
+		    {
+			int sum = 0;
+			for(int k=0; k < this.dimP; k++)
+			    {
+				sum += this.matrix[i][k] * mat.matrix[k][j];
+			    }
+			matRes[i][j] = sum;
+		    }
+	    }
+	Matrix matrixRes = new Matrix(this.dimN, mat.dimP, matRes);
+	return matrixRes;
     }
 }
 
