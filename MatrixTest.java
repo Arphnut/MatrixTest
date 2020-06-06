@@ -1,23 +1,23 @@
 // Import the class Scanner from the package java.util
-import java.util.Scanner;
+import java.util.Scanner;	
 // Import the Random class, from java.util
 import java.util.Random;
 
 public class MatrixTest{
     public static void main(String[] args) {
-	Matrix aTest =  new Matrix(3, 4);
+	Matrix aTest =  new Matrix(3, 3);
 	Matrix bTest = new Matrix(3, 3);
-	Vector vTest = new Vector(4);
-	System.out.println(aTest.transpose());
-	System.out.println(aTest.matrixMultiplication(bTest));
+	System.out.println(aTest);
+	System.out.println(bTest);
+	System.out.println(aTest.matrixAddition(bTest));
+	System.out.println(aTest.matrixSubstraction(bTest));
     }
 }
 
 class DimensionException extends Exception {
     public DimensionException() {
 	System.out.println("Exception in thread\n"
-			   + "The last dimension of the first matrix should "
-			   + "equal the first dimension from the second matrix.\n");
+			   + "The dimension of the two matrices should correlate\n");
     }
 }
 
@@ -82,12 +82,19 @@ class Matrix{
 	return matrix;
     }
 
-    public void testDimension(Matrix mat)
+    public void testMulDimension(Matrix mat)
 	throws DimensionException
     {
-	if (!(this.dimP == mat.dimN))
+	if (this.dimP != mat.dimN)
 	    throw new DimensionException();
     }
+
+    public void testSumDimension(Matrix mat)
+	throws DimensionException
+    { if ((this.dimN != mat.dimN) || (this.dimP != mat.dimP))
+	    throw new DimensionException();
+    }
+
 
     public Matrix transpose() {
 	int[][] trans = new int[this.dimP][this.dimN];
@@ -102,9 +109,43 @@ class Matrix{
 	return transMatrix;
     }
 
+    public Matrix matrixAddition(Matrix mat) {
+	try {
+	    this.testSumDimension(mat);
+	}
+	catch (DimensionException ex) {
+	    return null;
+	}
+	int[][] matRes = new int[this.dimN][this.dimP];
+	for (int i=0; i < this.dimN; i++) {
+	    for (int j=0; j < this.dimP; j++) {
+		matRes[i][j] = this.matrix[i][j] + mat.matrix[i][j];
+	    }
+	}
+	Matrix matrixRes = new Matrix(this.dimN, this.dimP, matRes);
+	return matrixRes;
+    }
+
+    public Matrix matrixSubstraction(Matrix mat) {
+	try {
+	    this.testSumDimension(mat);
+	}
+	catch (DimensionException ex) {
+	    return null;
+	}
+	int[][] matRes = new int[this.dimN][this.dimP];
+	for (int i=0; i < this.dimN; i++) {
+	    for (int j=0; j < this.dimP; j++) {
+		matRes[i][j] = this.matrix[i][j] - mat.matrix[i][j];
+	    }
+	}
+	Matrix matrixRes = new Matrix(this.dimN, this.dimP, matRes);
+	return matrixRes;
+    }
+
     public Matrix matrixMultiplication(Matrix mat) {
 	try {
-	    this.testDimension(mat);
+	    this.testMulDimension(mat);
 	}
 	catch (DimensionException ex) {
 	    return null;
